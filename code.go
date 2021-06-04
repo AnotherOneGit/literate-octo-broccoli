@@ -7,18 +7,12 @@ import (
 	"time"
 )
 
-var homeBet int
-var visitorBet int
-var homeScore int
-var visitorScore int
-var homeWin = false
-var visitorWin = false
-var draw = false
+var homeBet, visitorBet, homeScore, visitorScore int
+var homeWin, visitorWin, draw bool
 
 func main() {
 	talk()
 	score()
-	result()
 
 	switch {
 	case homeWin:
@@ -48,13 +42,14 @@ func score() {
 	homeScore = score[0]
 	visitorScore = score[1]
 	fmt.Println(fmt.Sprintf("Результат матча - %d : %d", homeScore, visitorScore))
+	result(homeScore, visitorScore)
 }
 
-func result() {
+func result(home int, visitor int) {
 	// определения результата матча
-	if homeScore > visitorScore {
+	if home > visitor {
 		homeWin = true
-	} else if homeScore < visitorScore {
+	} else if home < visitor {
 		visitorWin = true
 	}
 	draw = true
