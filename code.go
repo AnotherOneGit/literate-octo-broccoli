@@ -10,8 +10,13 @@ import (
 var homeBet, visitorBet, homeScore, visitorScore int
 var homeWin, visitorWin, draw bool
 
+type match struct {
+	home, visitor int
+	result        string
+}
+
 func main() {
-	talk()
+	bet()
 	score()
 
 	switch {
@@ -24,14 +29,21 @@ func main() {
 	}
 }
 
-func talk() {
+func bet() {
 	// спрашиваем у пользователя и выводим прогноз счёта
 	fmt.Print("Введите количество голов хозяев: ")
 	fmt.Fscan(os.Stdin, &homeBet)
 
 	fmt.Print("Введите количество голов гостей: ")
 	fmt.Fscan(os.Stdin, &visitorBet)
-	fmt.Println(fmt.Sprintf("Вы поставили на счёт %d : %d", homeBet, visitorBet))
+
+	bet := match{
+		home:    homeBet,
+		visitor: visitorBet,
+		result:  result(homeBet, visitorBet),
+	}
+
+	fmt.Println(fmt.Sprintf("Вы поставили на счёт %d : %d", bet.home, bet.visitor))
 }
 
 func score() {
@@ -41,16 +53,23 @@ func score() {
 
 	homeScore = score[0]
 	visitorScore = score[1]
-	fmt.Println(fmt.Sprintf("Результат матча - %d : %d", homeScore, visitorScore))
-	result(homeScore, visitorScore)
+
+	game := match{
+		home:    homeScore,
+		visitor: visitorScore,
+		result:  result(homeScore, visitorScore),
+	}
+
+	fmt.Println(fmt.Sprintf("Результат матча - %d : %d", game.home, game.visitor))
+
 }
 
-func result(home int, visitor int) {
+func result(home int, visitor int) string {
 	// определения результата матча
 	if home > visitor {
-		homeWin = true
+		return "Хозяева победили!"
 	} else if home < visitor {
-		visitorWin = true
+		return "Гости победили!"
 	}
-	draw = true
+	return "Ничья"
 }
